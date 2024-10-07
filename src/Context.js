@@ -31,7 +31,7 @@ export const AppContextProvider = ({ children }) => {
               return new Promise((resolve, reject) => {
                 img.onload = async () => {
                   const canvas = document.createElement('canvas');
-                  const MAX_WIDTH = 800;
+                  const MAX_WIDTH = 1600;
         
                   // Mantener la relación de aspecto al redimensionar
                   const scale = MAX_WIDTH / img.width;
@@ -60,6 +60,7 @@ export const AppContextProvider = ({ children }) => {
     };
 
     const saveProduct = async (product,fileList) => {
+        console.log(product)
         const formData = new FormData()
         const hiddenMessage = message.loading("Aguarde...", 0);
         const processedImages = await processImages(fileList)
@@ -131,8 +132,10 @@ export const AppContextProvider = ({ children }) => {
     const [promotions, setPromotions] = useState([])
     const [banners, setBanners] = useState([])  
     const [ajustes, setAjustes] = useState([])
+    const [fetchingData, setFetchingData] = useState(false)
     const getData = async () => {
         const hiddenMessage = message.loading("Aguarde...", 0)
+        
         try {
             const response = await fetch(`${config.apibaseUrl}/get-data`);
             const data = await response.json();
@@ -150,6 +153,7 @@ export const AppContextProvider = ({ children }) => {
             }
         } finally {
             hiddenMessage()
+            
         }
     }
 
@@ -181,11 +185,14 @@ export const AppContextProvider = ({ children }) => {
     const alreadyFetch = useRef(false)
     useEffect(() => {
         (async () => {
+            setFetchingData(true)
             if (!alreadyFetch.current && !isLoading) {
+                
                 const hiddenMessage = message.loading("Cargando...", 0)
                 alreadyFetch.current = true
                 await getData()
                 hiddenMessage()
+                setFetchingData(false)
             }
         })()
     }, [isLoading, isAuthenticated])
@@ -598,7 +605,8 @@ export const AppContextProvider = ({ children }) => {
             editPromotion,deletePromotion,
             uploadBanner,banners,
             updateBanner,deleteBanner,
-            ajustes,updateSettings
+            ajustes,updateSettings,
+            fetchingData
         }}>
             {children}
         </Context.Provider>
