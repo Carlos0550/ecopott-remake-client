@@ -4,60 +4,62 @@ import { useAppContext } from '../../../Context';
 import { Form } from 'antd';
 import Markdown from "react-markdown"
 import TextHelp from '../Ayuda/HelpText';
+import ReactQuill from 'react-quill';
 function EditProductModal({ closeModal, product }) {
     const { editProduct, categories } = useAppContext();
     const [fileList, setFileList] = useState([]);
     const [imagesToDelete, setImagesToDelete] = useState([])
     const [formProduct] = Form.useForm();
+    const [description, setDescription] = useState('');
 
-    const onFinishProduct = async(values) => {
-        const productID = product.id_product;  
-        const { productImages, ...valuesToSend } = values; 
-        
+    const onFinishProduct = async (values) => {
+        const productID = product.id_product;
+        const { productImages, ...valuesToSend } = values;
+
         await editProduct(productID, valuesToSend, fileList, imagesToDelete);
         formProduct.resetFields();
         setFileList([]);
         setImagesToDelete([]);
         closeModal();
-        
+
 
     };
 
     const handleUploadChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
-      };
-    
-    
-    useEffect(()=>{
-        if (product) {
-          formProduct.setFieldsValue({
-            productName: product.name,
-            productPrice: product.price,
-            productCategory: product.id_product_category,
-            productDescription: product.description,
-          })
-          const images = product.images.map((image) => ({
-            uid: image.id_image,
-            name: `image-${image.id_image}.jpg`,
-            status: "done",
-            url: image.image_url
-          }))
-    
-          setFileList(images);
-          formProduct.setFieldsValue({
-            productImages: images,
-          });
-        }
-       
-     },[product])
-
-    
-    const handleRemoveImages = (value) => {
-        setFileList(fileList.filter((image)=> image.url !== value.url));
-        setImagesToDelete((prev) => prev.concat(value.url)); 
     };
 
-    
+
+    useEffect(() => {
+        if (product) {
+            formProduct.setFieldsValue({
+                productName: product.name,
+                productPrice: product.price,
+                productCategory: product.id_product_category,
+                productDescription: product.description,
+            })
+            const images = product.images.map((image) => ({
+                uid: image.id_image,
+                name: `image-${image.id_image}.jpg`,
+                status: "done",
+                url: image.image_url
+            }))
+
+            setFileList(images);
+            formProduct.setFieldsValue({
+                productImages: images,
+            });
+        }
+
+    }, [product])
+
+
+    const handleRemoveImages = (value) => {
+        setFileList(fileList.filter((image) => image.url !== value.url));
+        setImagesToDelete((prev) => prev.concat(value.url));
+    };
+
+
 
     return (
         <Modal
@@ -119,34 +121,43 @@ function EditProductModal({ closeModal, product }) {
                 </Form.Item>
 
                 {/* Descripción del producto */}
-                <Collapse  items={[
-                    {
-                        key: '1',
-                        label: "Ayuda con las descripciones",
-                        children: <TextHelp/>
-                    }
-                ]}/>
+                
                 <Form.Item
                     name={"productDescription"}
                     label="Descripción del producto"
                     rules={[{ required: true, message: "Por favor, introduce la descripción del producto" }]}
                 >
-                    <Input.TextArea rows={4} />
-                </Form.Item>
+                    <ReactQuill
+                        value={description}
+                        onChange={setDescription}
+                        modules={{
+                            toolbar: [
+                                [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                                ['bold', 'italic', 'underline'],
 
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['clean']
+                            ],
+                        }}
+                        style={{ height: '200px' }} // Puedes ajustar la altura aquí
+                    />
+                </Form.Item>
+                    <div style={{marginTop:"3rem"}}></div>
                 {/* Imágenes */}
                 <Form.Item
                     name={"productImages"}
                     label="Imágenes"
                     rules={[
                         { required: true, message: "" },
-                        {validator: ()=> {
-                            if (fileList.length < 1 || fileList.length > 4) {
-                                return Promise.reject("Por favor, introduce entre 1 y 4 imágenes");
-                            }else{
-                                return Promise.resolve();
+                        {
+                            validator: () => {
+                                if (fileList.length < 1 || fileList.length > 4) {
+                                    return Promise.reject("Por favor, introduce entre 1 y 4 imágenes");
+                                } else {
+                                    return Promise.resolve();
+                                }
                             }
-                        }}
+                        }
 
                     ]}
                 >
@@ -157,7 +168,7 @@ function EditProductModal({ closeModal, product }) {
                         beforeUpload={() => false}
                         showUploadList={true}
                         fileList={fileList}
-                        onRemove={(value)=> handleRemoveImages(value)}
+                        onRemove={(value) => handleRemoveImages(value)}
                     >
                         {fileList.length < 4 && <Button>Subir Imagen</Button>}
 

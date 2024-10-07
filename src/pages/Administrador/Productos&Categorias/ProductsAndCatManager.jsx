@@ -6,16 +6,21 @@ import { useAppContext } from '../../../Context';
 import EditCategoryModal from '../EditarCategorias/EditCategoryModal';
 import EditProductModal from '../EditarProductos/EditProductModal';
 import {DeleteOutlined} from "@ant-design/icons"
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Importa los estilos de Quill
 function ProductsAndCatManager() {
     const [formProduct] = Form.useForm();
     const [formCategory] = Form.useForm();
     const { saveProduct, uploadCategory,categories,productsByImages,deleteCategory, changeProductState,deleteProduct } = useAppContext();
     const [fileList, setFileList] = useState([]);
+    const [description, setDescription] = useState('');
     const onFinishProduct = async(values) => {
-        const { productImages, ...valuesToSend } = values
-        await saveProduct(valuesToSend, fileList);
-        formProduct.resetFields()
-        setFileList([])
+        console.log(description)
+        const { productImages, ...valuesToSend } = values;
+        await saveProduct({ ...valuesToSend, productDescription: description }, fileList);
+        formProduct.resetFields();
+        setFileList([]);
+        setDescription(''); // Resetear la descripción
     }
     const [savingCat, setSavingCat] = useState(false)
     const onFinishCategory =async (values) => {
@@ -208,14 +213,29 @@ function ProductsAndCatManager() {
                                             name={"productDescription"}
                                             label="Descripción del producto"
                                             rules={[{ required: true, message: "Por favor, introduce la descripción del producto" }]}
+                                            
                                         >
-                                            <Input.TextArea rows={4} />
+                                            <ReactQuill 
+                                                value={description}
+                                                onChange={setDescription}
+                                                modules={{
+                                                    toolbar: [
+                                                        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                                                        ['bold', 'italic', 'underline'],
+                                                        
+                                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                        ['clean']
+                                                    ],
+                                                }}
+                                                style={{ height: '200px' }} // Puedes ajustar la altura aquí
+                                            />
                                         </Form.Item>
-
+                                                <div style={{marginTop: "3rem"}}></div>
                                         {/* Imágenes */}
                                         <Form.Item
                                             name={"productImages"}
                                             label="Imágenes"
+                                            
                                             rules={[{ required: true, message: "Por favor, introduce las imágenes del producto" }]}
                                         >
                                             <Upload
