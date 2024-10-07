@@ -31,10 +31,10 @@ function Navbar() {
                     <li className={isActive("/Inicio") ? "active" : ""}>
                         <Link to={"/shop"}>Inicio</Link>
                     </li>
-                    <li className={isActive("/Ofertas") ? "active" : ""}>
-                        <Link to="/ofertas">Ofertas y promociones</Link>
+                    <li className={isActive("/shop/promotions") ? "active" : ""}>
+                        <Link to="/shop/promotions">Ofertas y promociones</Link>
                     </li>
-                    <li className={isActive("/About") ? "active" : ""}>
+                    {/* <li className={isActive("/About") ? "active" : ""}>
                         <Link to="/about">Sobre Nosotros</Link>
                     </li>
                     <li className={isActive("/contacto") ? "active" : ""}>
@@ -42,7 +42,7 @@ function Navbar() {
                     </li>
                     <li className={isActive("/carrito") ? "active" : ""}>
                         <Link to="/carrito">Carrito</Link>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
 
@@ -64,10 +64,10 @@ function Navbar() {
                         <li className={isActive("/Inicio") ? "active" : ""}>
                             <Link to={"/shop"}>Inicio</Link>
                         </li>
-                        <li className={isActive("/Ofertas") ? "active" : ""}>
-                            <Link to="/ofertas">Ofertas y promociones</Link>
+                        <li className={isActive("/shop/promotions") ? "active" : ""}>
+                            <Link to="/shop/promotions">Ofertas y promociones</Link>
                         </li>
-                        <li className={isActive("/About") ? "active" : ""}>
+                        {/* <li className={isActive("/About") ? "active" : ""}>
                             <Link to="/about">Sobre Nosotros</Link>
                         </li>
                         <li className={isActive("/contacto") ? "active" : ""}>
@@ -75,7 +75,7 @@ function Navbar() {
                         </li>
                         <li className={isActive("/carrito") ? "active" : ""}>
                             <Link to="/carrito">Carrito</Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </nav>
