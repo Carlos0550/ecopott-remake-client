@@ -29,9 +29,9 @@ function AdminNavbar() {
           <img src={logoIcon} alt="Logo" />
         </div>
         <ul>
-          <li className={isActive("/admin-dashboard") ? "active" : ""}>
+          {/* <li className={isActive("/admin-dashboard") ? "active" : ""}>
             <Link to={"/admin-dashboard"}>Inicio</Link>
-          </li>
+          </li> */}
           <li className={isActive("/products-and-categories") ? "active" : ""}>
             <Link to="/products-and-categories">Productos y categorías</Link>
           </li>
@@ -63,9 +63,9 @@ function AdminNavbar() {
         
         <div className={"nav-phone__menu"}>
           <ul>
-            <li className={isActive("/admin-dashboard") ? "active" : ""} onClick={closeNav}>
+            {/* <li className={isActive("/admin-dashboard") ? "active" : ""} onClick={closeNav}>
               <Link to={"/admin-dashboard"}>Inicio</Link>
-            </li>
+            </li> */}
             <li className={isActive("/products-and-categories") ? "active" : ""} onClick={closeNav}>
               <Link to="/products-and-categories">Productos y categorías</Link>
             </li>
