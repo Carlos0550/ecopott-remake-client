@@ -9,6 +9,7 @@ import { useAppContext } from '../../../Context'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import {Element, scroller } from 'react-scroll';
 import Markdown from 'react-markdown'
+import ReactQuill from 'react-quill'
 
 function PromotionsManager() {
     const [firstForm] = Form.useForm();
@@ -19,10 +20,12 @@ function PromotionsManager() {
     const [selectedPromo, setSelectedPromo] = useState({})
     const [removedImg, setRemovedImg] = useState([])
     const [promotionID, setPromotionID] = useState(null)
+    const [description, setDescription] = useState('');
     const { savePromotion, promotions, changePromotionStatus,editPromotion, deletePromotion } = useAppContext();
     const onFinishFirstForm = async (values) => {
         console.log("Imagen a eliminar: ", removedImg)
         const { promotionImage, promotionDiscount, ...valuesToSend } = values
+        console.log(valuesToSend)
         editingPromo ? await editPromotion(
             valuesToSend,
             dayjs(dates.startDate),
@@ -249,7 +252,20 @@ function PromotionsManager() {
                                                 }
                                             ]}
                                         >
-                                            <Input.TextArea placeholder='Escriba una descripción' cols={50} rows={5} />
+                                            <ReactQuill
+                                                 value={description}
+                                                 onChange={setDescription}
+                                                 modules={{
+                                                     toolbar: [
+                                                         [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                                                         ['bold', 'italic', 'underline'],
+                         
+                                                         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                         ['clean']
+                                                     ],
+                                                 }}
+                                                 style={{ height: '200px' }} // Puedes ajustar la altura aquí
+                                            />
                                         </Form.Item>
 
                                         <p>¿Aplicar algun descuento?</p>

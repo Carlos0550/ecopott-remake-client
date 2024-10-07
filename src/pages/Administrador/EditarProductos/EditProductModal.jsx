@@ -55,8 +55,9 @@ function EditProductModal({ closeModal, product }) {
 
 
     const handleRemoveImages = (value) => {
+       
         setFileList(fileList.filter((image) => image.url !== value.url));
-        setImagesToDelete((prev) => prev.concat(value.url));
+        setImagesToDelete([...imagesToDelete, value.url].filter(img => img !== undefined));
     };
 
 

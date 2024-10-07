@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminNavbar from '../../Barra de navegacion/AdminNavbar';
 import "./productsAndCat.css";
 import { Button, Card, Col, Form, Input, Popconfirm, Row, Select, Space, Switch, Table, Upload } from "antd";
@@ -11,11 +11,12 @@ import 'react-quill/dist/quill.snow.css'; // Importa los estilos de Quill
 function ProductsAndCatManager() {
     const [formProduct] = Form.useForm();
     const [formCategory] = Form.useForm();
+    const [enabledOptions, setEnabledOptions] = useState([]);
+    const [optionsValues, setOptionsValues] = useState([]);
     const { saveProduct, uploadCategory,categories,productsByImages,deleteCategory, changeProductState,deleteProduct } = useAppContext();
     const [fileList, setFileList] = useState([]);
     const [description, setDescription] = useState('');
     const onFinishProduct = async(values) => {
-        console.log(description)
         const { productImages, ...valuesToSend } = values;
         await saveProduct({ ...valuesToSend, productDescription: description }, fileList);
         formProduct.resetFields();
@@ -207,7 +208,19 @@ function ProductsAndCatManager() {
                                             ))}
                                             </Select>
                                         </Form.Item>
-
+                                        {/* <Space>
+                                            <p>Habilitar Opciones de compra</p>
+                                        <Switch checked={enabledOptions} onChange={() => setEnabledOptions(!enabledOptions)}/>
+                                        </Space>
+                                        {enabledOptions ? (
+                                            <>
+                                                <Form.Item
+                                                name={"productOptions"}
+                                                >
+                                                    
+                                                </Form.Item>
+                                            </>
+                                        ) : null} */}
                                         {/* Descripción del producto */}
                                         <Form.Item
                                             name={"productDescription"}
@@ -232,6 +245,7 @@ function ProductsAndCatManager() {
                                         </Form.Item>
                                                 <div style={{marginTop: "3rem"}}></div>
                                         {/* Imágenes */}
+
                                         <Form.Item
                                             name={"productImages"}
                                             label="Imágenes"
@@ -284,6 +298,7 @@ function ProductsAndCatManager() {
                                             <Button
                                                 type="primary"
                                                 htmlType="submit"
+                                                loading={savingCat}
                                             >
                                                 Guardar Categoría
                                             </Button>
