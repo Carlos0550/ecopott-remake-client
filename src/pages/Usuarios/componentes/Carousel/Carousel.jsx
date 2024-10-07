@@ -3,26 +3,26 @@ import { useAppContext } from '../../../../Context'
 import "./carousel.css"
 function Carousel() {
     const { banners } = useAppContext()
-console.log(banners)
 const [currentIndex, setCurrentIndex] = useState(0);
 
 const goToNextSlide = () => {
   setCurrentIndex((prevIndex) => 
-    prevIndex === banners.length - 1 ? 0 : prevIndex + 1
+      (prevIndex + 1) % banners.length  
   );
-};
+}
 
 const goToPrevSlide = () => {
   setCurrentIndex((prevIndex) => 
-    prevIndex === 0 ? banners.length - 1 : prevIndex - 1
+      (prevIndex - 1 + banners.length) % banners.length 
   );
 };
 
-// Autoplay
 useEffect(() => {
-  const interval = setInterval(goToNextSlide, 5000);
+  const interval = setInterval(goToNextSlide, 5000); 
+
+
   return () => clearInterval(interval);
-}, []);
+}, [banners.length]);
 
 return (
   <div className="carousel">
