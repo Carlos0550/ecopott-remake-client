@@ -60,7 +60,6 @@ export const AppContextProvider = ({ children }) => {
     };
 
     const saveProduct = async (product,fileList) => {
-        console.log(product)
         const formData = new FormData()
         const hiddenMessage = message.loading("Aguarde...", 0);
         const processedImages = await processImages(fileList)
