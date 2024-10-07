@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AdminNavbar from '../../Barra de navegacion/AdminNavbar';
 import { useAppContext } from '../../../Context';
-import { Space, Switch, Table, message } from 'antd';
+import { List, Switch, message, Space } from 'antd';
 
 function Settings() {
     const { ajustes, updateSettings } = useAppContext();
@@ -14,62 +14,53 @@ function Settings() {
     }, [ajustes]);
 
     const [updating, setUpdating] = useState(false);
+
     const handleSwitchChange = async (key, value) => {
         const updatedSettings = {
             ...parsedSettings[0],
             [key]: value,
         };
-        setUpdating(true)
-        await updateSettings(updatedSettings)
-        setUpdating(false)
+        setUpdating(true);
+        await updateSettings(updatedSettings);
+        setUpdating(false);
     };
 
-    const tableSetting = [
+    const settingsData = [
         {
-            key: "1",
-            title: "Habilitar página",
-            render: (_, record) => (
-                <>
-                    <Space>
-                        <span>{record.page_enabled ? "Habilitado" : "Deshabilitado"}</span>
-                        <Switch 
-                            checked={record.page_enabled} 
-                            loading={updating}
-                            onChange={(value) => handleSwitchChange('page_enabled', value)} 
-                        />
-                    </Space>
-                </>
-            ),
+            key: 'page_enabled',
+            label: 'Habilitar página',
+            value: parsedSettings[0]?.page_enabled || false,
+            description: 'Controla si la página está habilitada o deshabilitada',
         },
-        {
-            key: "2",
-            title: "Notificaciones de compra",
-            render: (_, record) => (
-                <>
-                    <Space>
-                        <span>{record.notificaciones ? "Habilitado" : "Deshabilitado"}</span>
-                        <Switch 
-                            checked={record.notificaciones} 
-                            onChange={(value) => handleSwitchChange('notificaciones', value)} 
-                        />
-                    </Space>
-                </>
-            ),
-        },
+        
     ];
 
     return (
         <>
             <AdminNavbar />
-            <div className='container__wrapper'>
-                <h1 className='title'>Ajustes</h1>
+            <div className="container__wrapper">
+                <h1 className="title">Ajustes</h1>
 
-                <Table
-                    columns={tableSetting}
-                    dataSource={parsedSettings}
-                    pagination={false}
-                    rowKey="key"
-                    scroll={{x:500}}
+                <List
+                    itemLayout="vertical"
+                    dataSource={settingsData}
+                    style={{minWidth:"100%"}}
+                    renderItem={item => (
+                        <List.Item>
+                            <List.Item.Meta
+                                title={item.label}
+                                description={item.description}
+                            />
+                            <Space>
+                                <span>{item.value ? 'Habilitado' : 'Deshabilitado'}</span>
+                                <Switch
+                                    checked={item.value}
+                                    loading={updating}
+                                    onChange={(value) => handleSwitchChange(item.key, value)}
+                                />
+                            </Space>
+                        </List.Item>
+                    )}
                 />
             </div>
         </>
