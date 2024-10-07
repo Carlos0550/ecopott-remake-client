@@ -11,6 +11,8 @@ import BannersManager from './pages/Administrador/Banners/BannersManager.jsx';
 import Settings from './pages/Administrador/Ajustes/Settings.jsx';
 import Shop from './pages/Usuarios/Shop.jsx';
 import ProductDetails from './pages/Usuarios/componentes/DetallesDelProducto/ProductDetails.jsx';
+import PromotionsView from './pages/Usuarios/componentes/Promociones/PromotionsView.jsx';
+import PromotionDetails from './pages/Usuarios/componentes/DetallesDeLaPromocion/PromotionDetails.jsx';
 const App = () => {
   
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path='/shop/*' element={<Shop/>}/>
         <Route path='/shop/product/:id' element={<ProductDetails/>}/>
+        <Route path='/shop/promotions/*' element={<PromotionsView/>}/>
+        <Route path='/shop/promotions/details/:id' element={<PromotionDetails/>}/>
         <Route 
           path="/admin-dashboard" 
           element={
