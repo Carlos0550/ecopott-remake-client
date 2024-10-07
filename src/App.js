@@ -10,6 +10,7 @@ import PromotionsManager from './pages/Administrador/Promociones/PromotionsManag
 import BannersManager from './pages/Administrador/Banners/BannersManager.jsx';
 import Settings from './pages/Administrador/Ajustes/Settings.jsx';
 import Shop from './pages/Usuarios/Shop.jsx';
+import ProductDetails from './pages/Usuarios/componentes/DetallesDelProducto/ProductDetails.jsx';
 const App = () => {
   
   return (
@@ -18,7 +19,8 @@ const App = () => {
       
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path='/shop' element={<Shop/>}/>
+        <Route path='/shop/*' element={<Shop/>}/>
+        <Route path='/shop/product/:id' element={<ProductDetails/>}/>
         <Route 
           path="/admin-dashboard" 
           element={
